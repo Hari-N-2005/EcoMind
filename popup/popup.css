@@ -2,9 +2,12 @@
   padding: 16px;
   max-height: 600px;
   overflow-y: auto;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .app-header {
+  text-align: center;
   margin-bottom: 20px;
   border-bottom: 1px solid #e0e0e0;
   padding-bottom: 12px;
@@ -146,6 +149,10 @@
   cursor: pointer;
 }
 
+.question-form button:hover:not(:disabled) {
+  background: #1565c0;
+}
+
 .question-form button:disabled {
   background: #ccc;
   cursor: not-allowed;
@@ -156,6 +163,52 @@
   background: #e3f2fd;
   border-radius: 8px;
   margin-top: 8px;
+}
+
+/* API Key Prompt Styles */
+.api-key-prompt {
+  padding: 20px;
+  text-align: center;
+}
+
+.api-key-prompt h3 {
+  color: #1976d2;
+  margin-bottom: 10px;
+}
+
+.api-key-prompt p {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.api-key-prompt form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.api-key-prompt input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.api-key-prompt button {
+  padding: 10px 15px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.api-key-prompt button:hover {
+  background: #45a049;
 }
 
 .answer {

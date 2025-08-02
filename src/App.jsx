@@ -5,79 +5,65 @@ import ChatInterface from './components/ChatInterface';
 import { ContentExtractor } from './utils/contentExtractor';
 import { OpenAIClient } from './utils/openaiClient';
 
-const App = () => {
+import ApiKeyPrompt from './components/ApiKeyPrompt';
+
+const App = ({ getProductInfo }) => {
   const [productInfo, setProductInfo] = useState(null);
   const [brandAnalysis, setBrandAnalysis] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [openaiClient, setOpenaiClient] = useState(null);
-
-  useEffect(() => {
-    initializeApp();
-    // eslint-disable-next-line
-  }, []);
+  const [isApiKeyMissing, setIsApiKeyMissing] = useState(false);
 
   const initializeApp = async () => {
-    // Get API key from Chrome storage
+    setIsLoading(true);
     const result = await chrome.storage.sync.get(['openaiApiKey']);
     if (result.openaiApiKey) {
+      setIsApiKeyMissing(false);
       setOpenaiClient(new OpenAIClient(result.openaiApiKey));
-      analyzeCurrentPage();
-    } else {
-      promptForApiKey();
-    }
-  };
-
-  const promptForApiKey = () => {
-    const apiKey = prompt('Please enter your OpenAI API key:');
-    if (apiKey) {
-      chrome.storage.sync.set({ openaiApiKey: apiKey });
-      setOpenaiClient(new OpenAIClient(apiKey));
-      analyzeCurrentPage();
-    }
-  };
-
-  const analyzeCurrentPage = async () => {
-    setIsLoading(true);
-
-    try {
-      // Get current tab info
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-      // Inject content script to extract product info
-      const results = await chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        function: () => {
-          // This is executed in the context of the page
-          return window.extractProductInfo();
+      getProductInfo((productData) => {
+        if (productData.error) {
+          setError(productData.error);
+        } else {
+          setProductInfo(productData);
         }
+        setIsLoading(false);
       });
-
-      const productData = results[0].result;
-      setProductInfo(productData);
-
-      if (productData.brand && openaiClient) {
-        const analysis = await openaiClient.analyzeBrand(productData.brand, productData);
-        setBrandAnalysis(analysis);
-      }
-    } catch (error) {
-      console.error('Error analyzing page:', error);
+    } else {
+      setIsApiKeyMissing(true);
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
-  const handleAskQuestion = async (question) => {
-    if (!openaiClient || !brandAnalysis) return;
-    return await openaiClient.answerQuestion(question, productInfo.brand, brandAnalysis);
+  const handleApiKeySubmit = async (apiKey) => {
+    await chrome.storage.sync.set({ openaiApiKey: apiKey });
+    await initializeApp();
   };
+
+  if (isLoading) {
+    return (
+      <div className="app loading">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (isApiKeyMissing) {
+    return <ApiKeyPrompt onApiKeySubmit={handleApiKeySubmit} />;
+  }
+
+  if (error) {
+    return (
+      <div className="app error">
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
 
   if (!productInfo) {
     return (
       <div className="app loading">
-        <div className="loading-message">
-          <h2 style={{ color: 'green' }}>EcoMind Popup Loaded!</h2>
-          <p>Analyzing current page...</p>
-        </div>
+        <p>Waiting for product information...</p>
       </div>
     );
   }
