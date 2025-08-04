@@ -13,18 +13,33 @@ function App() {
     setScannedData(null);
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, { type: "scan" }, async (response) => {
-        if (chrome.runtime.lastError) {
-          console.error(chrome.runtime.lastError.message);
-          setScannedData({ brand: 'Error', productTitle: 'Could not connect to the page. Please refresh the page and try again.' });
-          setIsLoading(false);
-        } else {
-          setScannedData(response);
-          const result = await analyzeProduct(response);
-          setAnalysis(result);
-          setIsLoading(false);
+      const tabId = tabs[0].id;
+      chrome.scripting.executeScript(
+        {
+          target: { tabId: tabId },
+          files: ['content.js'],
+        },
+        () => {
+          if (chrome.runtime.lastError) {
+            console.error(chrome.runtime.lastError.message);
+            setScannedData({ brand: 'Error', productTitle: 'Could not inject script. Please refresh the page and try again.' });
+            setIsLoading(false);
+            return;
+          }
+          chrome.tabs.sendMessage(tabId, { type: "scan" }, async (response) => {
+            if (chrome.runtime.lastError) {
+              console.error(chrome.runtime.lastError.message);
+              setScannedData({ brand: 'Error', productTitle: 'Could not connect to the page. Please refresh the page and try again.' });
+              setIsLoading(false);
+            } else {
+              setScannedData(response);
+              const result = await analyzeProduct(response);
+              setAnalysis(result);
+              setIsLoading(false);
+            }
+          });
         }
-      });
+      );
     });
   };
 
@@ -66,7 +81,7 @@ function App() {
               <p><strong>Title:</strong> {scannedData.productTitle}</p>
               <h5>Reviews:</h5>
               <ul>
-                {scannedData.reviews.map((review, index) => (
+                {scannedData.reviews && scannedData.reviews.map((review, index) => (
                   <li key={index}>{review}</li>
                 ))}
               </ul>
