@@ -1,9 +1,6 @@
 import OpenAI from "openai";
 
-// IMPORTANT: Replace with your actual OpenAI API key.
-// It is recommended to use a more secure method to store your API key,
-// such as environment variables or a secret management service.
-const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY";
+const OPENAI_API_KEY = process.env.VITE_OPENAI_API_KEY;
 
 const openai = new OpenAI({
   apiKey: OPENAI_API_KEY,

@@ -34,6 +34,5 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("Found reviews:", reviews);
 
     sendResponse({ brand, productTitle, reviews });
-
   }
 });

@@ -7,7 +7,7 @@ export default [
   { ignores: ['dist', 'node_modules'] },
   {
     files: ['**/*.{js,jsx}'],
-    ignores: ['vite.config.js', 'eslint.config.js'],
+    ignores: ['vite.config.js', 'eslint.config.js', 'src/openai.js'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: {
@@ -35,7 +35,7 @@ export default [
     },
   },
   {
-    files: ['vite.config.js', 'eslint.config.js'],
+    files: ['vite.config.js', 'eslint.config.js', 'src/openai.js'],
     languageOptions: {
       globals: {
         ...globals.node,
