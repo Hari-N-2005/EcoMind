@@ -1,73 +1,33 @@
-/* Add these to your existing App.css */
 .app {
-    /* Base styles that work for both modes */
-    font-family: sans-serif;
-    transition: all 0.3s ease;
-  }
-  
-  /* Dark/Light mode classes */
-  .dark {
-    background-color: #1a1a2e;
-    color: #f1f1f1;
-  }
-  
-  .light {
-    background-color: #f8f9fa;
-    color: #333;
-  }
-  
-  /* Extension-specific styles */
-  .extension-mode {
-    width: 400px;
-    height: 600px;
-    overflow: auto;
-  }
-  
-  /* Development-specific styles */
-  .dev-mode {
-    width: 400px;
-    min-height: 600px;
-    overflow: auto
-  }
-  
-  .dashboard {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .stats-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
+  width: 300px;
+  padding: 1rem;
+  text-align: center;
+}
 
-  /* Essential popup stability styles */
-  html, body, #root, .app {
-    margin: 0;
-    padding: 0;
-    width: auto;
-    height: auto;
-    min-width: 400px;
-    min-height: 600px;
-    overflow: auto;
-    position: static;
-  }
-  
-  /* Focus styles for the container */
-  .app:focus {
-    outline: none;
-  }
-  
-  /* Prevent body scrolling */
-  body {
-    overflow: hidden;
-  }
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* Focus retention */
-  body:focus {
-    outline: none;
-  }
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.scan-button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.results {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-align: left;
+}

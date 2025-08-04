@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "ChronoWeb",
+  "name": "EcoMind",
   "version": "1.0",
-  "description": "Track your website activity and visualize time spent",
+  "description": "AI Shopping Companion for ethical and sustainable shopping.",
   "action": {
     "default_popup": "index.html",
     "default_icon": {
@@ -14,9 +14,8 @@
   "permissions": [
     "storage",
     "tabs",
-    "alarms",
     "scripting",
-    "idle"
+    "activeTab"
   ],
   "host_permissions": [
     "<all_urls>"
