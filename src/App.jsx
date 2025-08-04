@@ -1,94 +1,92 @@
-// src/App.jsx
-import React, { useState, useEffect } from 'react';
-import BrandSummary from './components/BrandSummary';
-import ChatInterface from './components/ChatInterface';
-import { ContentExtractor } from './utils/contentExtractor';
-import { OpenAIClient } from './utils/openaiClient';
+import { useState, useEffect, useRef } from 'react'
+import Dashboard from './components/Dashboard'
+import Header from './components/Header'
+import Settings from './components/Settings'
+import './App.css'
 
-import ApiKeyPrompt from './components/ApiKeyPrompt';
+function App() {
+  const [view, setView] = useState('dashboard')
+  const [darkMode, setDarkMode] = useState(false)
+  const popupRef = useRef(null)
 
-const App = ({ getProductInfo }) => {
-  const [productInfo, setProductInfo] = useState(null);
-  const [brandAnalysis, setBrandAnalysis] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [openaiClient, setOpenaiClient] = useState(null);
-  const [isApiKeyMissing, setIsApiKeyMissing] = useState(false);
-
-  const initializeApp = async () => {
-    setIsLoading(true);
-    const result = await chrome.storage.sync.get(['openaiApiKey']);
-    if (result.openaiApiKey) {
-      setIsApiKeyMissing(false);
-      setOpenaiClient(new OpenAIClient(result.openaiApiKey));
-      getProductInfo((productData) => {
-        if (productData.error) {
-          setError(productData.error);
-        } else {
-          setProductInfo(productData);
-        }
-        setIsLoading(false);
-      });
-    } else {
-      setIsApiKeyMissing(true);
-      setIsLoading(false);
+  // Keep popup open logic
+  useEffect(() => {
+    const handleWindowBlur = () => {
+      // Only for extension environment
+      if (typeof chrome !== 'undefined' && chrome.runtime?.id) {
+        window.focus() // Keep the window focused
+      }
     }
-  };
 
-  const handleApiKeySubmit = async (apiKey) => {
-    await chrome.storage.sync.set({ openaiApiKey: apiKey });
-    await initializeApp();
-  };
+    window.addEventListener('blur', handleWindowBlur)
+    return () => window.removeEventListener('blur', handleWindowBlur)
+  }, [])
 
-  if (isLoading) {
-    return (
-      <div className="app loading">
-        <p>Loading...</p>
-      </div>
-    );
-  }
+  // Dark mode effect
+  useEffect(() => {
+    document.body.className = darkMode ? 'dark-mode' : 'light-mode'
+  }, [darkMode])
 
-  if (isApiKeyMissing) {
-    return <ApiKeyPrompt onApiKeySubmit={handleApiKeySubmit} />;
-  }
+  // Click-outside handler for extension
+  useEffect(() => {
+    if (!popupRef.current || typeof chrome === 'undefined') return
 
-  if (error) {
-    return (
-      <div className="app error">
-        <p>Error: {error}</p>
-      </div>
-    );
-  }
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        // Prevent closing by focusing back
+        popupRef.current.focus()
+      }
+    }
 
-  if (!productInfo) {
-    return (
-      <div className="app loading">
-        <p>Waiting for product information...</p>
-      </div>
-    );
-  }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  //The extra addon effect
+  useEffect(() => {
+    // Connect to background script
+    const port = chrome.runtime?.connect({ name: "popup" });
+    
+    // Keepalive heartbeat
+    const interval = setInterval(() => {
+      port?.postMessage({ type: "heartbeat" });
+    }, 1000);
+  
+    return () => {
+      clearInterval(interval);
+      port?.disconnect();
+    };
+  }, [])
+
+  useEffect(() => {
+    console.log('Popup mounted');
+    return () => console.log('Popup unmounted');
+  }, [])
+
+  // Determine environment class
+  const environmentClass = (typeof chrome !== 'undefined' && chrome.runtime?.id) ? 'extension-mode' : 'dev-mode'
 
   return (
-    <div className="app">
-      <div className="app-header">
-        <h2>EcoMind – AI Shopping Companion</h2>
-        <p className="product-title">{productInfo.title}</p>
-      </div>
-
-      <BrandSummary
-        brandName={productInfo.brand}
-        analysis={brandAnalysis}
-        isLoading={isLoading}
+    <div 
+      className={`app ${environmentClass} ${darkMode ? 'dark' : 'light'}`} 
+      ref={popupRef}
+      tabIndex="0" // Make div focusable
+      onBlur={() => {
+        if (typeof chrome !== 'undefined' && popupRef.current) {
+          popupRef.current.focus()
+        }
+      }}
+    >
+      <Header 
+        onViewChange={setView} 
+        darkMode={darkMode} 
+        toggleDarkMode={() => setDarkMode(!darkMode)}
       />
-
-      {brandAnalysis && (
-        <ChatInterface
-          onAskQuestion={handleAskQuestion}
-          brandName={productInfo.brand}
-        />
-      )}
+      <main>
+        <Dashboard />
+      </main>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
