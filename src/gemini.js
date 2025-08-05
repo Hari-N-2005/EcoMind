@@ -7,7 +7,7 @@ const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 export const analyzeProduct = async (product) => {
   const { brand, productTitle, reviews } = product;
 
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const prompt = `
     Analyze the following product for its sustainability, labor ethics, and animal welfare.
