@@ -56,16 +56,24 @@ function App() {
             <div className="results">
               <h3>Analysis Results:</h3>
               <div className="score">
-                <strong>Sustainability:</strong> {analysis.sustainability.score}/10
-                <p>{analysis.sustainability.summary}</p>
+                <strong>Product Quality:</strong> {analysis.productquality.score}/10
+                <p>{analysis.productquality.summary}</p>
               </div>
               <div className="score">
-                <strong>Labor Ethics:</strong> {analysis.labor_ethics.score}/10
-                <p>{analysis.labor_ethics.summary}</p>
+                <strong>Value for Money:</strong> {analysis.valueformoney.score}/10
+                <p>{analysis.valueformoney.summary}</p>
               </div>
               <div className="score">
-                <strong>Animal Welfare:</strong> {analysis.animal_welfare.score}/10
-                <p>{analysis.animal_welfare.summary}</p>
+                <strong>Customer Satisfaction:</strong> {analysis.customersatisfaction.score}/10
+                <p>{analysis.customersatisfaction.summary}</p>
+              </div>
+              <div className="score">
+                <strong>Ease of Use:</strong> {analysis.easeofuse.score}/10
+                <p>{analysis.easeofuse.summary}</p>
+              </div>
+              <div className="score">
+                <strong>Delivery and Packaging:</strong> {analysis.deliveryandpackaging.score}/10
+                <p>{analysis.deliveryandpackaging.summary}</p>
               </div>
             </div>
           )}

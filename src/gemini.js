@@ -10,32 +10,42 @@ export const analyzeProduct = async (product) => {
   const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const prompt = `
-    Analyze the following product for its sustainability, labor ethics, and animal welfare.
+    Analyze the following product for its product quality, value for money, customer satisfaction, ease of use, delivery and packaging.
     Product Title: ${productTitle}
     Brand: ${brand}
     Reviews:
     ${reviews.join("\n- ")}
 
     Based on the information above, provide a score from 1 to 10 (1 being poor, 10 being excellent) for each of the following categories:
-    - Sustainability
-    - Labor Ethics
-    - Animal Welfare
+    - Product Quality
+    - Value for Money
+    - Customer Satisfaction
+    - Ease of Use
+    - Delivery and Packaging
 
     Also, provide a brief one-sentence summary for each score.
 
     The output should be in JSON format like this:
     {
-      "sustainability": {
+      "productquality": {
         "score": 8,
         "summary": "The product is made with recycled materials."
       },
-      "labor_ethics": {
+      "valueformoney": {
         "score": 7,
         "summary": "The company has a public commitment to fair labor practices."
       },
-      "animal_welfare": {
+      "customersatisfaction": {
         "score": 9,
         "summary": "The product is certified cruelty-free."
+      },
+      "easeofuse": {
+        "score": 8,
+        "summary": "The product is easy to use and comes with clear instructions."
+      },
+      "deliveryandpackaging": {
+        "score": 9,
+        "summary": "The product was delivered quickly and the packaging was minimal and recyclable."
       }
     }
   `;
