@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css';
-import { analyzeProduct } from './openai';
+import { analyzeProduct } from './gemini';
 
 function App() {
   const [scannedData, setScannedData] = useState(null);

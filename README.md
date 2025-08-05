@@ -8,9 +8,9 @@ It visually displays trust scores across key categories—like sustainability, l
 
 ## Getting Started
 
-To use the AI features of this extension, you need to have an OpenAI API key.
+To use the AI features of this extension, you need to have a Google AI API key for the Gemini API.
 
-1.  Get your API key from [OpenAI](https://beta.openai.com/signup/).
+1.  Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
 2.  Create a file named `.env` in the root of the project.
 3.  Copy the contents of `.env.example` into `.env`.
-4.  Replace the placeholder `"YOUR_OPENAI_API_KEY"` in the `.env` file with your actual API key.
+4.  Replace the placeholder `"YOUR_GEMINI_API_KEY"` in the `.env` file with your actual API key.

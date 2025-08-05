@@ -1,14 +1,13 @@
-import OpenAI from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
-const openai = new OpenAI({
-  apiKey: OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true,
-});
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 export const analyzeProduct = async (product) => {
   const { brand, productTitle, reviews } = product;
+
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
   const prompt = `
     Analyze the following product for its sustainability, labor ethics, and animal welfare.
@@ -42,14 +41,13 @@ export const analyzeProduct = async (product) => {
   `;
 
   try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: prompt }],
-      response_format: { type: "json_object" },
-    });
-
-    const result = JSON.parse(response.choices[0].message.content);
-    return result;
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = await response.text();
+    // The response is a string, so we need to find the JSON part and parse it.
+    const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+    const json = JSON.parse(jsonString);
+    return json;
   } catch (error) {
     console.error("Error analyzing product:", error);
     return {
