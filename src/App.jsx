@@ -1,6 +1,16 @@
 import { useState } from 'react';
 import './App.css';
 import { analyzeProduct } from './gemini';
+import logo from '/icons/icon16.png';
+
+function Header() {
+  return (
+    <header className="header-bar">
+      <img src={logo} alt="EcoMind Logo" className="header-logo" />
+      <span className="header-title">EcoMind</span>
+    </header>
+  );
+}
 
 function App() {
   const [scannedData, setScannedData] = useState(null);
@@ -45,6 +55,7 @@ function App() {
 
   return (
     <div className="app">
+      <Header />
       <main>
         <div className="container">
           <p>Scan the page for products</p>
@@ -102,3 +113,5 @@ function App() {
 }
 
 export default App;
+
+// ADDED HEADER AND BORDER< BUT BUGGY. FIX IT
