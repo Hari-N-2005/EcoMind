@@ -58,10 +58,12 @@ function App() {
       <Header />
       <main>
         <div className="container">
-          <p>Scan the page for products</p>
-          <button className="scan-button" onClick={handleScan} disabled={isLoading}>
-            {isLoading ? 'Analyzing...' : 'Scan Page'}
-          </button>
+          {!analysis && <p>Scan the page for products</p>}
+          {!analysis && (
+            <button className="scan-button" onClick={handleScan} disabled={isLoading}>
+              {isLoading ? 'Analyzing...' : 'Scan Page'}
+            </button>
+          )}
           {isLoading && <div className="loader"></div>}
           {analysis && !analysis.error && (
             <div className="results">
