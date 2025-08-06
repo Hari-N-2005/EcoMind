@@ -3,6 +3,7 @@
   text-align: center;
   height: 100vh;
   width: auto;
+  box-sizing: border-box;
 }
 
 .container {
@@ -26,7 +27,7 @@
 }
 
 .results {
-  margin-top: 1rem;
+  margin: 1rem;
   padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -34,12 +35,12 @@
 }
 
 .scanned-data {
-  margin-top: 1rem;
+  margin: 1rem;
   padding: 1rem;
   border: 1px solid #eee;
   border-radius: 8px;
   text-align: left;
-  background-color: #f9f9f9;
+  color: whitesmoke;
 }
 
 .score {
