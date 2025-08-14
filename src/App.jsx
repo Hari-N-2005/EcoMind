@@ -6,8 +6,24 @@ import logo from '/icons/icon16.png';
 function Header() {
   return (
     <header className="header-bar">
-      <img src={logo} alt="EcoMind Logo" className="header-logo" />
-      <span className="header-title">EcoMind</span>
+      <div className="header-content">
+        <div className="header-left">
+          <div className="logo-container">
+            <img src={logo} alt="EcoMind Logo" className="header-logo" />
+            <div className="logo-glow"></div>
+          </div>
+          <div className="header-text">
+            <span className="header-title">EcoMind</span>
+            <span className="header-subtitle">Smart Product Analysis</span>
+          </div>
+        </div>
+        <div className="header-right">
+          <div className="status-indicator">
+            <span className="status-dot"></span>
+            <span className="status-text">Ready</span>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }
@@ -60,32 +76,17 @@ function App() {
         <div className="container">
           {!analysis && (
             <div className="scan-page">
-              <div className="welcome-section">
-                <div className="welcome-icon">🌱</div>
-                <h2 className="welcome-title">Welcome to EcoMind</h2>
-                <p className="welcome-subtitle">
-                  Your AI-powered product analysis companion
-                </p>
-                <div className="features-list">
-                  <div className="feature-item">
-                    <span className="feature-icon">🔍</span>
-                    <span className="feature-text">Smart Product Scanning</span>
-                  </div>
-                  <div className="feature-item">
-                    <span className="feature-icon">📊</span>
-                    <span className="feature-text">Detailed Quality Analysis</span>
-                  </div>
-                  <div className="feature-item">
-                    <span className="feature-icon">💡</span>
-                    <span className="feature-text">AI-Powered Insights</span>
-                  </div>
+              <div className="unified-scan-section">
+                <div className="welcome-content">
+                  <div className="welcome-icon">🌱</div>
+                  <h2 className="welcome-title">Welcome to EcoMind</h2>
+                  <p className="welcome-subtitle">
+                    Your AI-powered product analysis companion
+                  </p>
                 </div>
-              </div>
-              
-              <div className="scan-section">
+                
                 <div className="scan-instruction">
                   <p className="instruction-text">
-                    <span className="instruction-icon">👆</span>
                     Navigate to any product page and click the button below to analyze
                   </p>
                 </div>
