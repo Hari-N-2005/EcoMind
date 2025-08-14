@@ -58,13 +58,74 @@ function App() {
       <Header />
       <main>
         <div className="container">
-          {!analysis && <p>Scan the page for products</p>}
           {!analysis && (
-            <button className="scan-button" onClick={handleScan} disabled={isLoading}>
-              {isLoading ? 'Analyzing...' : 'Scan Page'}
-            </button>
+            <div className="scan-page">
+              <div className="welcome-section">
+                <div className="welcome-icon">🌱</div>
+                <h2 className="welcome-title">Welcome to EcoMind</h2>
+                <p className="welcome-subtitle">
+                  Your AI-powered product analysis companion
+                </p>
+                <div className="features-list">
+                  <div className="feature-item">
+                    <span className="feature-icon">🔍</span>
+                    <span className="feature-text">Smart Product Scanning</span>
+                  </div>
+                  <div className="feature-item">
+                    <span className="feature-icon">📊</span>
+                    <span className="feature-text">Detailed Quality Analysis</span>
+                  </div>
+                  <div className="feature-item">
+                    <span className="feature-icon">💡</span>
+                    <span className="feature-text">AI-Powered Insights</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="scan-section">
+                <div className="scan-instruction">
+                  <p className="instruction-text">
+                    <span className="instruction-icon">👆</span>
+                    Navigate to any product page and click the button below to analyze
+                  </p>
+                </div>
+                
+                <button 
+                  className={`scan-button ${isLoading ? 'loading' : ''}`} 
+                  onClick={handleScan} 
+                  disabled={isLoading}
+                >
+                  <span className="button-icon">
+                    {isLoading ? '⏳' : '🚀'}
+                  </span>
+                  <span className="button-text">
+                    {isLoading ? 'Analyzing Product...' : 'Start Analysis'}
+                  </span>
+                  {!isLoading && <span className="button-shine"></span>}
+                </button>
+                
+                {isLoading && (
+                  <div className="loading-section">
+                    <div className="loader"></div>
+                    <div className="loading-steps">
+                      <div className="loading-step">
+                        <span className="step-icon">🔍</span>
+                        <span className="step-text">Scanning product information...</span>
+                      </div>
+                      <div className="loading-step">
+                        <span className="step-icon">📝</span>
+                        <span className="step-text">Extracting customer reviews...</span>
+                      </div>
+                      <div className="loading-step">
+                        <span className="step-icon">🤖</span>
+                        <span className="step-text">AI analysis in progress...</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           )}
-          {isLoading && <div className="loader"></div>}
           {analysis && !analysis.error && (
             <div className="results">
               <h3 className="results-title">📊 Analysis Results</h3>
