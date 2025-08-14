@@ -32,9 +32,11 @@ function App() {
   const [scannedData, setScannedData] = useState(null);
   const [analysis, setAnalysis] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleScan = () => {
     setIsLoading(true);
+    setIsTransitioning(false);
     setAnalysis(null);
     setScannedData(null);
 
@@ -60,8 +62,15 @@ function App() {
             } else {
               setScannedData(response);
               const result = await analyzeProduct(response);
-              setAnalysis(result);
-              setIsLoading(false);
+              
+              // Start transition animation
+              setIsTransitioning(true);
+              
+              // Small delay to allow transition to start, then show results
+              setTimeout(() => {
+                setAnalysis(result);
+                setIsLoading(false);
+              }, 100);
             }
           });
         }
@@ -75,7 +84,7 @@ function App() {
       <main>
         <div className="container">
           {!analysis && (
-            <div className="scan-page">
+            <div className={`scan-page ${isTransitioning ? 'fade-out' : ''}`}>
               <div className="unified-scan-section">
                 <div className="welcome-content">
                   <div className="welcome-icon">🌱</div>
