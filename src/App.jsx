@@ -225,7 +225,7 @@ function App() {
               <p>{analysis.error}</p>
             </div>
           )}
-          {scannedData && !isLoading && (
+          {/* {scannedData && !isLoading && (
             <div className="scanned-data">
               <h4 className="section-title">🔍 Scanned Product Data</h4>
               <div className="product-info">
@@ -252,7 +252,7 @@ function App() {
                 </div>
               )}
             </div>
-          )}
+          )}*/}
         </div>
       </main>
     </div>
